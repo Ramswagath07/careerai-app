@@ -18,7 +18,6 @@ class Settings(BaseSettings):
     MAX_FILE_SIZE_MB: int = 10
     UPLOAD_DIR: str = "uploads"
     ALLOWED_EXTENSIONS: List[str] = ["pdf", "docx", "txt"]
-    SPACY_MODEL: str = "en_core_web_sm"
 
     class Config:
         env_file = ".env"
