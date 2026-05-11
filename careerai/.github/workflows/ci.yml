@@ -1,0 +1,57 @@
+name: CareerAI CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend-test:
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:7
+        ports: ["27017:27017"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: Install deps
+        run: |
+          cd backend
+          pip install -r requirements.txt
+          python -m spacy download en_core_web_sm
+      - name: Test ATS Scorer
+        run: |
+          cd backend
+          python -c "from app.ml.ats_scorer import ats_scorer; r=ats_scorer.score('Python developer 5 years experience email@test.com'); print('ATS Score:', r['ats_score']); assert r['ats_score'] > 0"
+
+  frontend-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Build
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+  deploy-backend:
+    needs: backend-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to Render
+        run: echo "Trigger Render deploy via webhook"
+        # Add: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+
+  deploy-frontend:
+    needs: frontend-build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to Vercel
+        run: echo "Vercel auto-deploys from main branch"
