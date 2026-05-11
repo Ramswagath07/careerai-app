@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { authAPI } from '../services/api'
-import { useAuthStore } from '../services/store'
+import { useAuthStore } from '../store/authStore'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -15,7 +15,7 @@ export default function LoginPage() {
     e.preventDefault()
     setLoading(true); setError('')
     try {
-      const { data } = await authAPI.login(email, password)
+      const { data } = await authAPI.login({ email, password })
       setAuth(data.user, data.access_token)
       navigate('/')
     } catch (err) {

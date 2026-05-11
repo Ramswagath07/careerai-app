@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { authAPI } from '../services/api'
-import { useAuthStore } from '../services/store'
+import { useAuthStore } from '../store/authStore'
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ name:'', email:'', password:'' })
@@ -44,7 +44,7 @@ export default function RegisterPage() {
                 style={{ width:'100%', padding:'11px 14px', background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.12)', borderRadius:10, color:'#f0f0f8', fontSize:14, outline:'none' }} />
             </div>
           ))}
-          <button type="submit" disabled={loading}
+          <button type="submit" disabled={loading}	
             style={{ padding:'12px', background:'linear-gradient(135deg,#6c63ff,#9f8fff)', border:'none', borderRadius:10, color:'white', fontSize:15, fontWeight:500, cursor:'pointer', opacity:loading?0.7:1, fontFamily:'DM Sans,sans-serif' }}>
             {loading ? 'Creating account...' : 'Create Account'}
           </button>
