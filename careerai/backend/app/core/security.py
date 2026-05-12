@@ -1,11 +1,10 @@
-"""JWT token creation, password hashing, and verification"""
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from app.core.config import settings
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto", bcrypt__rounds=12)
 
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
