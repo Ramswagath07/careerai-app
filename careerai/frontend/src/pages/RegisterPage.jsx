@@ -1,3 +1,4 @@
+// v2 - fixed full_name field
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { authAPI } from '../services/api'
