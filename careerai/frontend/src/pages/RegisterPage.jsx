@@ -15,7 +15,7 @@ export default function RegisterPage() {
     if (form.password.length < 6) { setError('Password must be at least 6 characters'); return }
     setLoading(true); setError('')
     try {
-      const { data } = await authAPI.register(form)
+      const { data } = await authAPI.register({ full_name: form.name, email: form.email, password: form.password })
       setAuth(data.user, data.access_token)
       navigate('/')
     } catch (err) {
@@ -33,26 +33,4 @@ export default function RegisterPage() {
           <h1 style={{ fontFamily:'Syne,sans-serif', fontSize:24, fontWeight:700 }}>Create Account</h1>
           <p style={{ color:'#9090b0', fontSize:14, marginTop:6 }}>Start your AI-powered career journey</p>
         </div>
-
-        {error && <div style={{ background:'rgba(255,107,107,0.1)', border:'1px solid rgba(255,107,107,0.3)', borderRadius:10, padding:'10px 14px', color:'#ff6b6b', fontSize:13, marginBottom:20 }}>{error}</div>}
-
-        <form onSubmit={handleSubmit} style={{ display:'flex', flexDirection:'column', gap:16 }}>
-          {[['name','Full Name','Ram Swagath','text'],['email','Email','ram@example.com','email'],['password','Password','Min. 6 characters','password']].map(([field, label, placeholder, type]) => (
-            <div key={field}>
-              <label style={{ fontSize:13, color:'#9090b0', marginBottom:6, display:'block' }}>{label}</label>
-              <input type={type} value={form[field]} onChange={e=>setForm({...form,[field]:e.target.value})} required placeholder={placeholder}
-                style={{ width:'100%', padding:'11px 14px', background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.12)', borderRadius:10, color:'#f0f0f8', fontSize:14, outline:'none' }} />
-            </div>
-          ))}
-          <button type="submit" disabled={loading}	
-            style={{ padding:'12px', background:'linear-gradient(135deg,#6c63ff,#9f8fff)', border:'none', borderRadius:10, color:'white', fontSize:15, fontWeight:500, cursor:'pointer', opacity:loading?0.7:1, fontFamily:'DM Sans,sans-serif' }}>
-            {loading ? 'Creating account...' : 'Create Account'}
-          </button>
-        </form>
-        <p style={{ textAlign:'center', marginTop:20, fontSize:13, color:'#9090b0' }}>
-          Already have an account? <Link to="/login" style={{ color:'#6c63ff', textDecoration:'none' }}>Sign in</Link>
-        </p>
-      </div>
-    </div>
-  )
-}
+        {error && <div style={{ background:'rgba(255,107,107,0.1)', border:'1px solid rgba(255,107,107,0.3)', borderRadius:10, padding:'10px 14px', color:'#ff6b6b', fontSize:1
